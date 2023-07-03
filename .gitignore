@@ -5,7 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
-
+/public
 # Node
 /node_modules
 npm-debug.log
@@ -37,6 +37,11 @@ yarn-error.log
 testem.log
 /typings
 
+/functions/hibabejelento-26e5a-firebase-adminsdk-ms2kw-9cd42401fb.json
+/functions/node_modules
+.firebase
+/src/app/enviroments.ts
+/public
 # System files
 .DS_Store
 Thumbs.db

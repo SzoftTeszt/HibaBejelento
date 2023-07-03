@@ -9,7 +9,7 @@ import { AuthService } from '../auth.service';
 export class SignUpComponent {
 constructor (private auth:AuthService){}
 
-hibabejelentes(){
-  this.auth.singInEmailLink().then((link)=>console.log("link",link));
+hibabejelentes(email:any){
+  this.auth.singInEmailLink(email).then((link)=>console.log("link",link));
 }
 }

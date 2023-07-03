@@ -12,6 +12,7 @@ import { UserListComponent } from './user-list/user-list.component';
 import { ErrorReportComponent } from './error-report/error-report.component';
 
 import { Enviroments } from './enviroments';
+import { HibajegyfeldolgozasaComponent } from './hibajegyfeldolgozasa/hibajegyfeldolgozasa.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { Enviroments } from './enviroments';
     SignInComponent,
     SignUpComponent,
     UserListComponent,
-    ErrorReportComponent
+    ErrorReportComponent,
+    HibajegyfeldolgozasaComponent
   ],
   imports: [
     BrowserModule,
