@@ -7,9 +7,15 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent {
+bejelentve=false;
 constructor (private auth:AuthService){}
 
 hibabejelentes(email:any){
-  this.auth.singInEmailLink(email).then((link)=>console.log("link",link));
+  if (email)
+  {
+    this.auth.sendInEmailLink(email).then();
+    this.bejelentve=true;
+    window.localStorage.setItem("email",email);
+  }
 }
 }

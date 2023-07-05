@@ -13,6 +13,8 @@ import { ErrorReportComponent } from './error-report/error-report.component';
 
 import { Enviroments } from './enviroments';
 import { HibajegyfeldolgozasaComponent } from './hibajegyfeldolgozasa/hibajegyfeldolgozasa.component';
+import { NavComponent } from './nav/nav.component';
+import { HibabejelentesComponent } from './hibabejelentes/hibabejelentes.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { HibajegyfeldolgozasaComponent } from './hibajegyfeldolgozasa/hibajegyfe
     SignUpComponent,
     UserListComponent,
     ErrorReportComponent,
-    HibajegyfeldolgozasaComponent
+    HibajegyfeldolgozasaComponent,
+    NavComponent,
+    HibabejelentesComponent
   ],
   imports: [
     BrowserModule,

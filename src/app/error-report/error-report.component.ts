@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { BaseService } from '../base.service';
 import { map } from 'rxjs';
+import { EmailService } from '../email.service';
+import { ErrorModel } from '../errorModel';
 
 
 @Component({
@@ -12,9 +14,11 @@ import { map } from 'rxjs';
 })
 export class ErrorReportComponent {
 uuid:any;
-uuids:any=[]
+uuids:any=[];
+user:any;
+
 constructor(private aroute:ActivatedRoute, public base:BaseService
-  ,private router:Router){
+  ,public router:Router, private auth:AuthService, private email:EmailService){
 
   this.aroute.queryParams.subscribe(
     (params)=>this.uuid=params['uuid']  
@@ -26,26 +30,44 @@ constructor(private aroute:ActivatedRoute, public base:BaseService
     ))
   ).subscribe(
     (uuids)=> this.uuids=uuids
+           
   )
 
+  this.auth.signInEmailLink();
+
+  this.auth.getisLogged().subscribe((user)=>
+  {
+    this.user=user
+    console.log("Saját!!! user(Errorreport):", user)
+  }
+  )  
 }
 
 isValid(){ 
-  return this.search().length>0;
+  return (this.search().length>0 && this.user);
 }
 
 search(){
   const array= this.uuids.filter((elem:any)=>{
-    console.log("elem",elem.uuid)
-    console.log("uuid",this.uuid)
-    console.log(elem.uuid==this.uuid)
+    // console.log("elem",elem.uuid)
+    // console.log("uuid",this.uuid)
+    // console.log(elem.uuid==this.uuid)
     return elem.uuid==this.uuid
   })
  return array;
 }
 
-hibajegyleadasa(){
+hibajegyleadasa(content:any){
+  var body:ErrorModel={}
+  body.content=content;
+  body.email=this.user.email;
+  body.status="Felvéve";
+  body.piority="Normal"
+  this.base.createError(body)
+
+  this.email.sendMail(this.user.email, '')
   this.base.DeleteUUID(this.search()[0].key);
+  this.auth.signOut();
   this.router.navigate(['/hibajegyfeldolgozasa'])
 }
 

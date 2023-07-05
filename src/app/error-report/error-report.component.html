@@ -2,7 +2,18 @@
 {{uuid}}
 {{uuids|json}} -->
 
-<ng-container *ngIf="isValid()">
+<ng-container *ngIf="isValid(); else hibasLink">
 <!-- {{uuid}} Az UUID Okés! -->
-<button (click)="hibajegyleadasa()" type="button" class="btn btn-primary">Hibajegy leadása</button>
+<div class="form-group">
+    <label for="exampleFormControlTextarea1">A hiba részletes leírása!</label>
+    <textarea #content class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+<button (click)="hibajegyleadasa(content.value)" type="button" class="btn btn-primary">Hibajegy leadása</button>
 </ng-container>
+<ng-template #hibasLink>
+    <div class="alert alert-danger" role="alert">
+       <p>Ez a link már nem érvényes!</p>
+       <button (click)="router.navigate(['/'])" type="button" class="btn btn-danger">Tovább a hibabejelentéshez</button>
+    </div>
+
+</ng-template>>
