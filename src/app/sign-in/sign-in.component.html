@@ -1,1 +1,20 @@
-<p>sign-in works!</p>
+{{email}},{{password}}
+<form>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input [(ngModel)]="email" name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input [(ngModel)]="password" name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+   
+    <button (click)="signIn(email,password)" class="btn btn-primary">Log In</button>
+  </form>
+  <div class="my-3">
+  <a routerLink="/forgotpassword" class="btn btn-primary">Forgot password?</a>
+  </div>
+  <div class="my-3">
+  <button (click)="googleAuth()" class="btn btn-primary"><i class='fa fa-google-plus-official'></i> Contiune with Google</button>
+  </div>

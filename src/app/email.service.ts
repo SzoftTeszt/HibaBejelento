@@ -16,8 +16,10 @@ export class EmailService {
   templateParams.cc_address+=";jagerattila@gmail.com"
   console.log("templateParams", templateParams)
   
-  emailjs.send('114477704928306662789', 'template_oeoe2ho', templateParams,'I2ux2EnOKBrHKLDji' )
-      .then(function(response) {
+  emailjs.send('114477704928306662789', 
+  'template_oeoe2ho', 
+  templateParams,
+  'I2ux2EnOKBrHKLDji' ).then(function(response) {
          console.log('SUCCESS!', response.status, response.text);
       }, function(error) {
          console.log('FAILED...', error);

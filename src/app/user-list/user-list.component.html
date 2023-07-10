@@ -1,1 +1,37 @@
-<p>user-list works!</p>
+<!-- <button (click)="addAdmin()" class="btn btn-primary">Add Admin Claim</button> -->
+
+<div class="row">
+    <div class="col">Email</div>
+    <div class="col">Name</div>
+    <div class="col">Claims</div>
+</div>
+
+<div *ngFor="let user of users" class="row">
+    <div class="col">{{user.email}}</div>
+    <div class="col">{{user.displayName}}</div>
+    <div class="col">
+        <div class="row">
+            <div class="col form-check form-switch">
+                <input 
+                (click)="setClaims('admin', user.uid)" 
+                [checked]="user.claims?.admin" 
+                class="form-check-input" 
+                type="checkbox" 
+                id="admin">
+                <label class="form-check-label" for="admin">Admin</label>
+              </div>
+            <div class="col form-check form-switch">
+                <input (click)="setClaims('sandwich', user.uid)" 
+                [checked]="user.claims?.sandwich" class="form-check-input" type="checkbox" id="sandwich">
+                <label class="form-check-label" for="sandwich">Sandwich</label>
+              </div>
+            <div class="col form-check form-switch">
+                <input (click)="setClaims('drink', user.uid)" [checked]="user.claims?.drink" class="form-check-input" type="checkbox" id="drink">
+                <label class="form-check-label" for="drink">Drink</label>
+            </div>
+            <div class="col">
+                <button (click)="saveClaims(user)" class="btn btn-primary">Add Admin Claim</button>
+            </div>
+        </div>
+    </div>
+</div>

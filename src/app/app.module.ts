@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,9 @@ import { Enviroments } from './enviroments';
 import { HibajegyfeldolgozasaComponent } from './hibajegyfeldolgozasa/hibajegyfeldolgozasa.component';
 import { NavComponent } from './nav/nav.component';
 import { HibabejelentesComponent } from './hibabejelentes/hibabejelentes.component';
+import { FormsModule } from '@angular/forms';
+import { VerifyemailComponent } from './verifyemail/verifyemail.component';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 
 @NgModule({
   declarations: [
@@ -25,14 +29,17 @@ import { HibabejelentesComponent } from './hibabejelentes/hibabejelentes.compone
     ErrorReportComponent,
     HibajegyfeldolgozasaComponent,
     NavComponent,
-    HibabejelentesComponent
+    HibabejelentesComponent,
+    VerifyemailComponent,
+    ForgotpasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     AngularFireModule.initializeApp(Enviroments.firebaseConfig),
-    AngularFireDatabaseModule 
+    AngularFireDatabaseModule,
+    HttpClientModule, FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

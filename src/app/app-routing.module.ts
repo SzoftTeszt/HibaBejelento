@@ -5,12 +5,14 @@ import { ErrorReportComponent } from './error-report/error-report.component';
 import { HibajegyfeldolgozasaComponent } from './hibajegyfeldolgozasa/hibajegyfeldolgozasa.component';
 import { HibabejelentesComponent } from './hibabejelentes/hibabejelentes.component';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
   {path:"errorreport", component:ErrorReportComponent},
   {path:"hibajegyfeldolgozasa", component:HibajegyfeldolgozasaComponent},
   {path:"signin", component:SignInComponent},
   {path:"signup", component:SignUpComponent},  
+  {path:"userlist", component:UserListComponent},  
   {path:"", component:HibabejelentesComponent}
 ];
 
