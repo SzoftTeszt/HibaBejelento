@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col" *ngFor="let oszlop of oszlopok">
+        {{oszlop.text}}
+    </div>
+    <div class="col" >
+        Műveletek
+    </div>
+</div>
+
+
+<div *ngFor="let hibajegy of hibajegyek" class="row">
+    <div class="col" *ngFor="let oszlop of oszlopok">
+       <ng-container *ngIf="oszlop.type=='select'; else plainText">
+        <select class="form-select" [(ngModel)]="hibajegy[oszlop.key]">
+            <option *ngFor="let ertek of oszlop.values"
+            [selected]="ertek.value==hibajegy[oszlop.key]"
+            [value]="ertek.value">
+                {{ertek.text}}
+            </option>
+            
+          </select>
+
+       </ng-container>
+       <ng-template #plainText>
+            {{hibajegy[oszlop.key]}}
+       </ng-template>
+ 
+    </div>
+    <div class="col" >
+        <button type="button" class="btn btn-primary">Ment</button>
+        <button type="button" class="btn btn-primary">Töröl</button>
+    </div>
+</div>

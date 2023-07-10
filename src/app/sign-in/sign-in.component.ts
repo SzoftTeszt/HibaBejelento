@@ -17,7 +17,7 @@ export class SignInComponent {
     this.auth.signIn(email, password)
     .then(()=>{
       console.log("Sikeres belépés");
-      this.router.navigate(['/userlist']);   
+      this.router.navigate(['/hibajegyek']);   
     })
     .catch((err)=>console.log("Hiba a belépésnél!", err.message))
   }
@@ -25,7 +25,7 @@ export class SignInComponent {
   googleAuth(){
     this.auth.googleAuth()
     .then(()=>{console.log("Sikeres googlebelépés");
-          this.router.navigate(['/sandwich']);   
+          this.router.navigate(['/hibajegyek']);   
   })
     .catch((err)=>console.log("Google belépés hiba",err.message))
 

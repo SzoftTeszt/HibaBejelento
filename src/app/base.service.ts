@@ -27,5 +27,8 @@ export class BaseService {
       
       return this.refHibajegy.push(body)
    }
+   getErrors(){
+    return this.refHibajegy;
+   }
 
 }

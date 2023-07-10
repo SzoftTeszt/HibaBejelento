@@ -19,6 +19,7 @@ import { HibabejelentesComponent } from './hibabejelentes/hibabejelentes.compone
 import { FormsModule } from '@angular/forms';
 import { VerifyemailComponent } from './verifyemail/verifyemail.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import { HibajegyekComponent } from './hibajegyek/hibajegyek.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
     NavComponent,
     HibabejelentesComponent,
     VerifyemailComponent,
-    ForgotpasswordComponent
+    ForgotpasswordComponent,
+    HibajegyekComponent
   ],
   imports: [
     BrowserModule,

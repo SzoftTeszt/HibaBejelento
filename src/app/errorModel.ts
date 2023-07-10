@@ -1,7 +1,9 @@
 export class ErrorModel{
     key?:string;
+    date?:string;
     email?:string;
     content?:string;
-    piority?:string;
-    status?:string;
+    piority?:number;
+    uid?:string;
+    status?:number;
 }

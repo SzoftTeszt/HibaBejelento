@@ -39,6 +39,13 @@
               </li>
             <li class="nav-item">
                 <a class="nav-link"
+                routerLink="/hibajegyek"
+                routerLinkActive="router-link-active"
+                [routerLinkActiveOptions]="{exact:true}"
+                >Hibák</a>
+              </li>
+            <li class="nav-item">
+                <a class="nav-link"
                 (click)="signOut()"
                 >Kilépés</a>
            </li>

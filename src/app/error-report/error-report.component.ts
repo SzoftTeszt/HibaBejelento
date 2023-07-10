@@ -61,8 +61,12 @@ hibajegyleadasa(content:any){
   var body:ErrorModel={}
   body.content=content;
   body.email=this.user.email;
-  body.status="Felvéve";
-  body.piority="Normal"
+  body.status=0;
+  body.piority=0;
+  body.uid="0";
+  var d=new Date();
+  console.log(d.toLocaleDateString(),";;;", d.toLocaleTimeString())
+  body.date=d.toLocaleDateString()+" "+d.toLocaleTimeString();
   this.base.createError(body)
 
   this.email.sendMail(this.user.email, '')

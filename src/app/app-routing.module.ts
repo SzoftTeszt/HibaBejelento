@@ -6,6 +6,7 @@ import { HibajegyfeldolgozasaComponent } from './hibajegyfeldolgozasa/hibajegyfe
 import { HibabejelentesComponent } from './hibabejelentes/hibabejelentes.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { UserListComponent } from './user-list/user-list.component';
+import { HibajegyekComponent } from './hibajegyek/hibajegyek.component';
 
 const routes: Routes = [
   {path:"errorreport", component:ErrorReportComponent},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path:"signin", component:SignInComponent},
   {path:"signup", component:SignUpComponent},  
   {path:"userlist", component:UserListComponent},  
+  {path:"hibajegyek", component:HibajegyekComponent},  
   {path:"", component:HibabejelentesComponent}
 ];
 
