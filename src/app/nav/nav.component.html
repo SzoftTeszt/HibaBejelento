@@ -30,14 +30,16 @@
           </li>
         </ng-container> 
          <ng-template #logged>
-            <li class="nav-item">
+            <li *ngIf="isSuperAdmin()" class="nav-item">
                 <a class="nav-link"
                 routerLink="/userlist"
                 routerLinkActive="router-link-active"
                 [routerLinkActiveOptions]="{exact:true}"
                 >User</a>
               </li>
-            <li class="nav-item">
+            <li 
+            *ngIf="isInformatikus()" 
+            class="nav-item">
                 <a class="nav-link"
                 routerLink="/hibajegyek"
                 routerLinkActive="router-link-active"

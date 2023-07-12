@@ -15,36 +15,39 @@ import { ErrorModel } from '../errorModel';
 export class ErrorReportComponent {
 uuid:any;
 uuids:any=[];
-user:any;
+user:any=null;
+finish=false;
 
 constructor(private aroute:ActivatedRoute, public base:BaseService
   ,public router:Router, private auth:AuthService, private email:EmailService){
 
-  this.aroute.queryParams.subscribe(
-    (params)=>this.uuid=params['uuid']  
-  )
+  // this.aroute.queryParams.subscribe(
+  //   (params)=>this.uuid=params['uuid']  
+  // )
 
-  this.base.GetAllUUID().snapshotChanges().pipe(
-    map(changes => changes.map(
-      c=> ({key:c.payload.key, uuid:c.payload.val()})
-    ))
-  ).subscribe(
-    (uuids)=> this.uuids=uuids
+  // this.base.GetAllUUID().snapshotChanges().pipe(
+  //   map(changes => changes.map(
+  //     c=> ({key:c.payload.key, uuid:c.payload.val()})
+  //   ))
+  // ).subscribe(
+  //   (uuids)=> this.uuids=uuids
            
-  )
+  // )
 
   this.auth.signInEmailLink();
 
   this.auth.getisLogged().subscribe((user)=>
   {
-    this.user=user
+    this.user=user;
+    this.finish=true;
     console.log("Saját!!! user(Errorreport):", user)
   }
   )  
 }
 
 isValid(){ 
-  return (this.search().length>0 && this.user);
+  // return (this.search().length>0 && this.user);
+  return  this.user;
 }
 
 search(){
@@ -70,7 +73,7 @@ hibajegyleadasa(content:any){
   this.base.createError(body)
 
   this.email.sendMail(this.user.email, '')
-  this.base.DeleteUUID(this.search()[0].key);
+  // this.base.DeleteUUID(this.search()[0].key);
   this.auth.signOut();
   this.router.navigate(['/hibajegyfeldolgozasa'])
 }

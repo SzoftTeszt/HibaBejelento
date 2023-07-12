@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   isLogged= new Subject();
-  loggedUser:any;
+  loggedUser:any=null;
   serverUrl="https://us-central1-hibabejelento-26e5a.cloudfunctions.net/api/";
   actionCodeSettings ={
      url:"http://localhost:4200/errorreport?uuid=",
@@ -38,17 +38,26 @@ export class AuthService {
       if (user)
       {
         this.loggedUser=user;
-        console.log("Hírdetve, belépés OK!", this.loggedUser)
+        // console.log("Hírdetve, belépés OK!", this.loggedUser)
         this.loggedUser.getIdToken().then((token:any) => {
           this.loggedUser.token=token;
+          this.getClaims(this.loggedUser.uid).subscribe(
+            {
+            next:(c)=>{
+              this.loggedUser.claims=c;
+              console.log("Jogkörök: ",this.loggedUser.claims)
+            },
+            error:(e)=>console.log("Hiba a jogkörök lekérdezésénél, ",e)
+          }
+          )    
         }).catch((err:any) => {
-          console.log("Hiba a token lekérésénél",err);
+          console.log("Hiba a token lekérésénél, ",err);
         });
 
       }
       else{
         this.loggedUser=null;
-        console.log("Hírdetve, belépés hiba, Kilépett? !")
+        // console.log("Hírdetve, belépés hiba, Kilépett? !")
       }
       this.isLogged.next(this.loggedUser)
     })
@@ -72,7 +81,7 @@ export class AuthService {
       this.afAuth.signInWithEmailLink(email)
       .then((result)=>{
         window.localStorage.removeItem("email");
-        console.log("Sikeres belépés", result)
+        // console.log("Sikeres belépés", result)
       })
       .catch((e)=>console.log("Azonosítási hiba",e))
     }
@@ -97,8 +106,10 @@ export class AuthService {
     const headers =
     new HttpHeaders().set('Authorization',this.loggedUser.token);
     this.http.post(url, body, {headers}).subscribe({
-      next:()=>{console.log("A claims beállítása sikeres!")},
-      error:(err)=>{console.log("Hiba a claims beállításakor: ", err)}
+      next:()=>{
+        // console.log("A claims beállítása sikeres!")
+      },
+      error:(err)=>{console.log("Hiba a Claims beállításakor: ", err)}
     })
   }
 
@@ -132,5 +143,22 @@ export class AuthService {
       .then(()=>this.router.navigate(['/verifyemail']))
       .catch((error)=>alert(error.message))
   }
+  isSuperAdmin(){
+    // console.log("Sadmin: ",this.loggedUser.claims?.['superAdmin'])
+    if (this.loggedUser && this.loggedUser.claims?.['superAdmin']!=undefined 
+            && this.loggedUser.claims?.['superAdmin']) return true;
+            return false;
+  }
+  isAdmin(){
+    if (this.loggedUser && this.loggedUser.claims?.['admin']!=undefined 
+            && this.loggedUser.claims?.['admin']) return true;
+            return false;
+  }
+  isInformatikus(){
+    if (this.loggedUser && this.loggedUser.claims?.['informatikus']!=undefined 
+            && this.loggedUser.claims?.['informatikus']) return true;
+            return false;
+  }
+  
 
 }

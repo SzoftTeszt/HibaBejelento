@@ -10,14 +10,26 @@ import { Router } from '@angular/router';
 export class SignInComponent {
   email="";
   password="";
+  user:any=null;
+  constructor(private auth:AuthService, private router:Router){
+    this.auth.getisLogged().subscribe((user)=>
+  {
+    this.user=user;
+    console.log("BelépvesingIn");
+    if (user)
+      {
+        console.log("Átirányít")
+         this.router.navigate(['/hibajegyek']);
+        }
+  })
 
-  constructor(private auth:AuthService, private router:Router){}
+  }
 
   signIn(email:string, password:string){
     this.auth.signIn(email, password)
     .then(()=>{
       console.log("Sikeres belépés");
-      this.router.navigate(['/hibajegyek']);   
+        
     })
     .catch((err)=>console.log("Hiba a belépésnél!", err.message))
   }

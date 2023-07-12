@@ -1,8 +1,9 @@
 <!-- <p>error-report works!</p>
 {{uuid}}
 {{uuids|json}} -->
-
-<ng-container *ngIf="isValid(); else hibasLink">
+<!-- {{user|json}} -->
+{{finish}}
+<ng-container *ngIf="finish && user; else hibasLink">
 <!-- {{uuid}} Az UUID Okés! -->
 <div class="form-group">
     <label for="exampleFormControlTextarea1">A hiba részletes leírása!</label>
@@ -11,9 +12,10 @@
 <button (click)="hibajegyleadasa(content.value)" type="button" class="btn btn-primary">Hibajegy leadása</button>
 </ng-container>
 <ng-template #hibasLink>
-    <div class="alert alert-danger" role="alert">
+  {{user|json}}
+    <div *ngIf="finish" class="alert alert-danger" role="alert">
        <p>Ez a link már nem érvényes!</p>
        <button (click)="router.navigate(['/'])" type="button" class="btn btn-danger">Tovább a hibabejelentéshez</button>
     </div>
 
-</ng-template>>
+</ng-template>

@@ -1,37 +1,52 @@
 <!-- <button (click)="addAdmin()" class="btn btn-primary">Add Admin Claim</button> -->
 
 <div class="row">
-    <div class="col">Email</div>
-    <div class="col">Name</div>
-    <div class="col">Claims</div>
+    <div class="col">E-mail</div>
+    <div class="col">Név</div>
+    <div class="col">Jogosultság</div>
+    <div class="d-flex flex-column justify-content-center col">
+        <p class="align-self-center">Mentés</p>
+    </div>
 </div>
 
-<div *ngFor="let user of users" class="row">
-    <div class="col">{{user.email}}</div>
-    <div class="col">{{user.displayName}}</div>
+<div *ngFor="let user of users" class="row my-3">
+    <div class="d-flex flex-column justify-content-center col">
+        {{user.email}}
+    </div>
+    <div class="d-flex flex-column justify-content-center col">
+        {{user.displayName}}
+    </div>
     <div class="col">
-        <div class="row">
+        <!-- <div class="row"> -->
+
             <div class="col form-check form-switch">
                 <input 
-                (click)="setClaims('admin', user.uid)" 
-                [checked]="user.claims?.admin" 
+                (click)="setClaims('superAdmin', user.uid)" 
+                [checked]="user.claims?.superAdmin" 
                 class="form-check-input" 
                 type="checkbox" 
-                id="admin">
+                id="superadmin">
+                <label class="form-check-label" for="superadmin">SuperAdmin</label>
+              </div>
+
+            <div class="col form-check form-switch">
+                <input (click)="setClaims('admin', user.uid)" 
+                [checked]="user.claims?.admin" class="form-check-input"
+                type="checkbox" id="admin">
                 <label class="form-check-label" for="admin">Admin</label>
               </div>
+
             <div class="col form-check form-switch">
-                <input (click)="setClaims('sandwich', user.uid)" 
-                [checked]="user.claims?.sandwich" class="form-check-input" type="checkbox" id="sandwich">
-                <label class="form-check-label" for="sandwich">Sandwich</label>
-              </div>
-            <div class="col form-check form-switch">
-                <input (click)="setClaims('drink', user.uid)" [checked]="user.claims?.drink" class="form-check-input" type="checkbox" id="drink">
-                <label class="form-check-label" for="drink">Drink</label>
+                <input (click)="setClaims('informatikus', user.uid)" 
+                [checked]="user.claims?.informatikus" class="form-check-input" 
+                type="checkbox" id="informatikus">
+                <label class="form-check-label" for="informatikus">Informatikus</label>
             </div>
-            <div class="col">
-                <button (click)="saveClaims(user)" class="btn btn-primary">Add Admin Claim</button>
-            </div>
-        </div>
+        <!-- </div> -->
     </div>
+
+            <div class="col d-flex flex-column justify-content-center">
+                <button (click)="saveClaims(user)" class=" justify-content-center align-self-center btn btn-primary">Ment</button>
+            </div>
+        
 </div>

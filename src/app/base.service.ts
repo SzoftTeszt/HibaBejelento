@@ -11,7 +11,7 @@ export class BaseService {
   private refHibajegy: AngularFireList<ErrorModel>
   constructor(private db:AngularFireDatabase) {
     this.refUUID=db.list('hibaazonositok');
-    this.refHibajegy=db.list('hibajegyek')
+    this.refHibajegy=db.list('hibajegyek');
    }
 
    AddUUID(UUID:any){

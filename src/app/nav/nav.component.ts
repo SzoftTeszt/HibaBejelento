@@ -18,6 +18,13 @@ constructor( private auth:AuthService){
   )  
 }
 
+isSuperAdmin(){
+ return this.auth.isSuperAdmin()
+}
+isInformatikus(){
+  return this.auth.isInformatikus();
+}
+
 signOut(){
   this.auth.signOut();
 }

@@ -19,8 +19,8 @@ export class UserListComponent {
         this.auth.getUsers().subscribe({
           next:(u)=>{
             this.users=u;
-            console.log("users",this.users);
-            console.log("userslenght",this.users.length);
+            // console.log("users",this.users);
+            // console.log("userslenght",this.users.length);
             for (let i = 0; i < this.users.length; i++) {    
               if (!this.users[i].displayName) 
                 this.users[i].displayName=this.users[i].email;    
