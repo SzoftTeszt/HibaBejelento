@@ -57,8 +57,8 @@ hibajegyleadasa(content:any){
   var body:ErrorModel={}
   body.content=content;
   body.email=this.mail;
-  body.status=0;
-  body.piority=0;
+  body.status="Felvéve";
+  body.piority="Folyatban";
   body.uid="0";
   var d=new Date();
   console.log(d.toLocaleDateString(),";;;", d.toLocaleTimeString())

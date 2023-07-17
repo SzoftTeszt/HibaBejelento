@@ -1,6 +1,8 @@
 <div class="row">
-    <div class="col" *ngFor="let oszlop of oszlopok">
+    <div (click)="sort(oszlop)" class="col" *ngFor="let oszlop of oszlopok">
         {{oszlop.text}}
+        <i *ngIf="oszlop.rendez==1" class="bi bi-sort-up"></i>
+        <i *ngIf="oszlop.rendez==2" class="bi bi-sort-down"></i>
     </div>
     <div class="col" >
         Műveletek
@@ -8,7 +10,7 @@
 </div>
 
 
-<div *ngFor="let hibajegy of hibajegyek" class="row">
+<div *ngFor="let hibajegy of (hibajegyek|search:szo)|sort:rendezes:rendezes.rendez" class="row">
     <div class="col" *ngFor="let oszlop of oszlopok">
        <ng-container *ngIf="oszlop.type=='select'; else plainText">
         <select class="form-select" [(ngModel)]="hibajegy[oszlop.key]">
@@ -27,7 +29,7 @@
  
     </div>
     <div class="col" >
-        <button type="button" class="btn btn-primary">Ment</button>
-        <button type="button" class="btn btn-primary">Töröl</button>
+        <button (click)="save(hibajegy)" type="button" class="btn btn-primary">Ment</button>
+        <button [disabled]="!isSuperAdmin" type="button" class="btn btn-primary">Töröl</button>
     </div>
 </div>

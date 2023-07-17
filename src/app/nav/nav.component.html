@@ -55,8 +55,8 @@
          </ng-template>        
         </ul>
         <form *ngIf="user" class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <input (keyup)="kereses(search.value)" #search class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button (click)="kereses(search.value)" class="btn btn-outline-success" type="submit">Search</button>
           </form>
 
       </div>

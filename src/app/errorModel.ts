@@ -3,7 +3,7 @@ export class ErrorModel{
     date?:string;
     email?:string;
     content?:string;
-    piority?:number;
+    piority?:string;
     uid?:string;
-    status?:number;
+    status?:string;
 }

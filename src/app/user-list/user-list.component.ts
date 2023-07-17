@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-user-list',
@@ -9,7 +10,8 @@ import { AuthService } from '../auth.service';
 export class UserListComponent {
   users:any;
   user:any;
-  constructor(private auth:AuthService){
+  szo:string="";
+  constructor(private auth:AuthService,  private search:SearchService){
     
     this.auth.getisLogged().subscribe((user)=>
     {
@@ -37,6 +39,9 @@ export class UserListComponent {
 
       }
     }
+    )
+    this.search.getSearch().subscribe(
+      (szo)=> this.szo=szo
     )
 
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-nav',
@@ -12,7 +13,7 @@ user:any;
 collapse=true;
 isInformatikus=false;
 isSuperAdmin=false;
-constructor( private auth:AuthService, private router:Router){ 
+constructor( private auth:AuthService, private router:Router, private search:SearchService){ 
   this.auth.getisLogged().subscribe((user)=>
   {
     this.user=user
@@ -36,6 +37,10 @@ constructor( private auth:AuthService, private router:Router){
 signOut(){
   this.router.navigate(['/'])
   this.auth.signOut();
+}
+
+kereses(szo:string){
+  this.search.setSearch(szo)
 }
 
 }

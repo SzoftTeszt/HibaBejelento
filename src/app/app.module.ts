@@ -20,6 +20,8 @@ import { FormsModule } from '@angular/forms';
 import { VerifyemailComponent } from './verifyemail/verifyemail.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import { HibajegyekComponent } from './hibajegyek/hibajegyek.component';
+import { SearchPipe } from './search.pipe';
+import { SortPipe } from './sort.pipe';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { HibajegyekComponent } from './hibajegyek/hibajegyek.component';
     HibabejelentesComponent,
     VerifyemailComponent,
     ForgotpasswordComponent,
-    HibajegyekComponent
+    HibajegyekComponent,
+    SearchPipe,
+    SortPipe
   ],
   imports: [
     BrowserModule,

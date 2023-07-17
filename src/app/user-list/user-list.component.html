@@ -9,7 +9,7 @@
     </div>
 </div>
 
-<div *ngFor="let user of users" class="row my-3">
+<div *ngFor="let user of users|search:szo" class="row my-3">
     <div class="d-flex flex-column justify-content-center col">
         {{user.email}}
     </div>

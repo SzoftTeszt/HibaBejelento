@@ -31,4 +31,9 @@ export class BaseService {
     return this.refHibajegy;
    }
 
+   saveError(hibajegy:any){
+    console.log("saveError", hibajegy)
+    return this.refHibajegy.update(hibajegy.key, hibajegy)
+   }
+
 }

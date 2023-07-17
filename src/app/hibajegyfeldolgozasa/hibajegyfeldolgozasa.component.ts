@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { SearchService } from '../search.service';
 
 @Component({
   selector: 'app-hibajegyfeldolgozasa',
@@ -7,5 +8,5 @@ import { Router } from '@angular/router';
   styleUrls: ['./hibajegyfeldolgozasa.component.css']
 })
 export class HibajegyfeldolgozasaComponent {
-constructor(public router:Router){}
+constructor(public router:Router, private search:SearchService){}
 }
