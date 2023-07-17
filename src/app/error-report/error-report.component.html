@@ -3,19 +3,26 @@
 {{uuids|json}} -->
 <!-- {{user|json}} -->
 {{finish}}
-<ng-container *ngIf="finish && user; else hibasLink">
-<!-- {{uuid}} Az UUID Okés! -->
-<div class="form-group">
-    <label for="exampleFormControlTextarea1">A hiba részletes leírása!</label>
-    <textarea #content class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+<ng-container *ngIf="!finish; else befejeztem">
+  <div  class="alert alert-info" role="alert">
+    Várj a link ellenőrzésére!
   </div>
-<button (click)="hibajegyleadasa(content.value)" type="button" class="btn btn-primary">Hibajegy leadása</button>
 </ng-container>
-<ng-template #hibasLink>
-  {{user|json}}
-    <div *ngIf="finish" class="alert alert-danger" role="alert">
-       <p>Ez a link már nem érvényes!</p>
-       <button (click)="router.navigate(['/'])" type="button" class="btn btn-danger">Tovább a hibabejelentéshez</button>
+<ng-template #befejeztem>
+  <ng-container *ngIf="!error; else hibasLink">
+  <!-- {{uuid}} Az UUID Okés! -->
+  <div class="form-group">
+      <label for="exampleFormControlTextarea1">A hiba részletes leírása!</label>
+      <textarea #content class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
     </div>
+  <button (click)="hibajegyleadasa(content.value)" type="button" class="btn btn-primary">Hibajegy leadása</button>
+  </ng-container>
+  <ng-template #hibasLink>
+    {{user|json}}
+      <div *ngIf="finish" class="alert alert-danger" role="alert">
+        <p>Ez a link már nem érvényes!</p>
+        <button (click)="router.navigate(['/'])" type="button" class="btn btn-danger">Tovább a hibabejelentéshez</button>
+      </div>
 
+  </ng-template>
 </ng-template>

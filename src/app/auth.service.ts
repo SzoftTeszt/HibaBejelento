@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { v4 as uuidv4 } from 'uuid';
 import { UUIDModel } from './uuid';
 import { BaseService } from './base.service';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GoogleAuthProvider} from '@angular/fire/auth';
 import { Router } from '@angular/router';
@@ -12,8 +12,15 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  isLogged= new Subject();
   loggedUser:any=null;
+  isLogged= new BehaviorSubject<any>(this.loggedUser);
+  
+  informatikus=false;
+  isInformatikus =new BehaviorSubject<boolean>(this.informatikus);
+
+  superAdmin=false;
+  isSuperAdmin =new BehaviorSubject<boolean>(this.superAdmin);
+
   serverUrl="https://us-central1-hibabejelento-26e5a.cloudfunctions.net/api/";
   actionCodeSettings ={
      url:"http://localhost:4200/errorreport?uuid=",
@@ -26,66 +33,77 @@ export class AuthService {
     private base:BaseService, 
      private http: HttpClient
      ,private router:Router) { 
-   
+      this.afAuth.authState.subscribe((user)=>{
+        if (user)
+        {
+          this.loggedUser=user;
+          // console.log("Hírdetve, belépés OK!", this.loggedUser)
+          this.loggedUser.getIdToken().then((token:any) => {
+            this.loggedUser.token=token;
+            this.getClaims(this.loggedUser.uid).subscribe(
+              {
+              next:(c:any)=>{
+                this.loggedUser.claims=c;
+                if (c && c.informatikus) this.informatikus=c.informatikus;
+                else this.informatikus=false;
+                if (c && c.superAdmin) this.superAdmin=c.superAdmin;
+                else this.superAdmin=false;
+                console.log("Jogkörök: ",this.loggedUser.claims)
+                
+                // Kellett ez ide?
+                this.isLogged.next(this.loggedUser)
+                this.isInformatikus.next(this.informatikus)
+                this.isSuperAdmin.next(this.superAdmin)
+              },
+              error:(e)=>{
+                this.loggedUser=null;
+                this.informatikus=this.superAdmin=false;
+                console.log("Hiba a jogkörök lekérdezésénél, ",e)}
+            }
+            )    
+          }).catch((err:any) => {
+            console.log("Hiba a token lekérésénél, ",err);
+          });
+  
+        }
+        else{
+          this.loggedUser=null;
+          this.informatikus=this.superAdmin=false;
+          // console.log("Hírdetve, belépés hiba, Kilépett? !")
+        }
+        this.isLogged.next(this.loggedUser)
+        this.isInformatikus.next(this.informatikus)
+        this.isSuperAdmin.next(this.superAdmin)
+      })
+  }
+  getIsSuperAdmin(){
+    return this.isSuperAdmin;
+  }
+
+  getIsInformatikus(){
+    return this.isInformatikus
   }
 
   signIn(email:string, password:string){
     return this.afAuth.signInWithEmailAndPassword(email, password);
   }
 
-  getisLogged(){
-    this.afAuth.authState.subscribe((user)=>{
-      if (user)
-      {
-        this.loggedUser=user;
-        // console.log("Hírdetve, belépés OK!", this.loggedUser)
-        this.loggedUser.getIdToken().then((token:any) => {
-          this.loggedUser.token=token;
-          this.getClaims(this.loggedUser.uid).subscribe(
-            {
-            next:(c)=>{
-              this.loggedUser.claims=c;
-              console.log("Jogkörök: ",this.loggedUser.claims)
-            },
-            error:(e)=>console.log("Hiba a jogkörök lekérdezésénél, ",e)
-          }
-          )    
-        }).catch((err:any) => {
-          console.log("Hiba a token lekérésénél, ",err);
-        });
-
-      }
-      else{
-        this.loggedUser=null;
-        // console.log("Hírdetve, belépés hiba, Kilépett? !")
-      }
-      this.isLogged.next(this.loggedUser)
-    })
+  getisLogged(){   
     return this.isLogged
   }
 
   sendInEmailLink(email:any){
-    const uuid=uuidv4();
-    this.base.AddUUID(uuid);
+    
   
-    this.actionCodeSettings.url+=uuid;
+    this.actionCodeSettings.url;
     //window.localStorage.setItem('emailForSignIn', email);
     return this.afAuth.sendSignInLinkToEmail(email, this.actionCodeSettings)
   }
   
-  signInEmailLink(){
-    var email= window.localStorage.getItem("email");
-    console.log("email",email);
-    if (email)
-    { 
-      this.afAuth.signInWithEmailLink(email)
-      .then((result)=>{
-        window.localStorage.removeItem("email");
-        // console.log("Sikeres belépés", result)
-      })
-      .catch((e)=>console.log("Azonosítási hiba",e))
-    }
+  signInEmailLink(email:string){
+      return this.afAuth.signInWithEmailLink(email)  
   }
+  
   signOut(){
     return this.afAuth.signOut();
   }
@@ -143,22 +161,7 @@ export class AuthService {
       .then(()=>this.router.navigate(['/verifyemail']))
       .catch((error)=>alert(error.message))
   }
-  isSuperAdmin(){
-    // console.log("Sadmin: ",this.loggedUser.claims?.['superAdmin'])
-    if (this.loggedUser && this.loggedUser.claims?.['superAdmin']!=undefined 
-            && this.loggedUser.claims?.['superAdmin']) return true;
-            return false;
-  }
-  isAdmin(){
-    if (this.loggedUser && this.loggedUser.claims?.['admin']!=undefined 
-            && this.loggedUser.claims?.['admin']) return true;
-            return false;
-  }
-  isInformatikus(){
-    if (this.loggedUser && this.loggedUser.claims?.['informatikus']!=undefined 
-            && this.loggedUser.claims?.['informatikus']) return true;
-            return false;
-  }
+
   
 
 }

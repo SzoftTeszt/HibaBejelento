@@ -40,9 +40,11 @@ export class HibajegyekComponent {
     map(
       ch=> ch.map(c=>({key:c.payload.key, ... c.payload.val()}))
     )
-  ).subscribe(
-    (adat)=> this.hibajegyek=adat
-  )
+  ).subscribe({
+    next:(adat)=> this.hibajegyek=adat,
+    error:(e)=>{}
+ 
+  })
  }
 
 }

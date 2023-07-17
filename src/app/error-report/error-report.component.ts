@@ -17,53 +17,46 @@ uuid:any;
 uuids:any=[];
 user:any=null;
 finish=false;
+error=false;
+mail:any;
 
 constructor(private aroute:ActivatedRoute, public base:BaseService
   ,public router:Router, private auth:AuthService, private email:EmailService){
 
-  // this.aroute.queryParams.subscribe(
-  //   (params)=>this.uuid=params['uuid']  
-  // )
-
-  // this.base.GetAllUUID().snapshotChanges().pipe(
-  //   map(changes => changes.map(
-  //     c=> ({key:c.payload.key, uuid:c.payload.val()})
-  //   ))
-  // ).subscribe(
-  //   (uuids)=> this.uuids=uuids
-           
-  // )
-
-  this.auth.signInEmailLink();
-
-  this.auth.getisLogged().subscribe((user)=>
-  {
-    this.user=user;
+  var mail= window.localStorage.getItem("email"); 
+  if (mail) this.auth.signInEmailLink(mail).then((result)=>{
+    this.mail=mail
+    window.localStorage.removeItem("email");
     this.finish=true;
-    console.log("Saját!!! user(Errorreport):", user)
-  }
-  )  
-}
-
-isValid(){ 
-  // return (this.search().length>0 && this.user);
-  return  this.user;
-}
-
-search(){
-  const array= this.uuids.filter((elem:any)=>{
-    // console.log("elem",elem.uuid)
-    // console.log("uuid",this.uuid)
-    // console.log(elem.uuid==this.uuid)
-    return elem.uuid==this.uuid
+    this.error=false;
+    // console.log("Sikeres belépés", result)
   })
- return array;
+  .catch((e)=>
+  {
+    console.log("Azonosítási hiba",e);
+    this.finish=true;
+    this.error=true;
+  })
+  else {
+    this.finish=true;
+    this.error=true;
+  }
+
+  // this.auth.getisLogged().subscribe((user)=>
+  // {
+  //   this.user=user;
+  //   this.finish=true;
+  //   console.log("Saját!!! user(Errorreport):", user)
+  // }
+  // )  
 }
+
+
 
 hibajegyleadasa(content:any){
   var body:ErrorModel={}
   body.content=content;
-  body.email=this.user.email;
+  body.email=this.mail;
   body.status=0;
   body.piority=0;
   body.uid="0";
@@ -72,7 +65,7 @@ hibajegyleadasa(content:any){
   body.date=d.toLocaleDateString()+" "+d.toLocaleTimeString();
   this.base.createError(body)
 
-  this.email.sendMail(this.user.email, '')
+  this.email.sendMail(this.mail, '')
   // this.base.DeleteUUID(this.search()[0].key);
   this.auth.signOut();
   this.router.navigate(['/hibajegyfeldolgozasa'])

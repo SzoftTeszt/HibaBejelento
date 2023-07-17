@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -9,23 +10,31 @@ import { AuthService } from '../auth.service';
 export class NavComponent {
 user:any;
 collapse=true;
-constructor( private auth:AuthService){ 
+isInformatikus=false;
+isSuperAdmin=false;
+constructor( private auth:AuthService, private router:Router){ 
   this.auth.getisLogged().subscribe((user)=>
   {
     this.user=user
     // console.log("Saját!!! user(Errorreport):", user)
   }
   )  
+
+  this.auth.getIsInformatikus().subscribe(
+    (logikai)=>{this.isInformatikus=logikai; 
+      console.log("Nav hírdetés informatikus", this.isInformatikus)}
+  )
+
+  this.auth. getIsSuperAdmin().subscribe(
+    (logikai)=>{this.isSuperAdmin=logikai; 
+      console.log("Nav hírdetés sadmin", this.isSuperAdmin)}
+  )
+
 }
 
-isSuperAdmin(){
- return this.auth.isSuperAdmin()
-}
-isInformatikus(){
-  return this.auth.isInformatikus();
-}
 
 signOut(){
+  this.router.navigate(['/'])
   this.auth.signOut();
 }
 

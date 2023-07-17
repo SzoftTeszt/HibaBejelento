@@ -29,7 +29,7 @@ export class SignInComponent {
     this.auth.signIn(email, password)
     .then(()=>{
       console.log("Sikeres belépés");
-        
+     this.router.navigate(['/hibajegyek'])
     })
     .catch((err)=>console.log("Hiba a belépésnél!", err.message))
   }
