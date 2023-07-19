@@ -13,33 +13,37 @@ export class UserListComponent {
   szo:string="";
   constructor(private auth:AuthService,  private search:SearchService){
     
-    this.auth.getisLogged().subscribe((user)=>
-    {
-      this.user=user
-      if (user)
-      {
-        this.auth.getUsers().subscribe({
-          next:(u)=>{
-            this.users=u;
-            // console.log("users",this.users);
-            // console.log("userslenght",this.users.length);
-            for (let i = 0; i < this.users.length; i++) {    
-              if (!this.users[i].displayName) 
-                this.users[i].displayName=this.users[i].email;    
-              this.auth.getClaims(this.users[i].uid).subscribe(
-                (c)=>{
-                  this.users[i].claims=c;
-                }
-              )          
-            }      
-          },
-          error:(e)=> console.log(e)
-        }
-        )
+    // this.auth.getisLogged().subscribe((user)=>
+    // {
+    //   this.user=user
+    //   if (user)
+    //   {
+    //     this.auth.getUsers().subscribe({
+    //       next:(u)=>{
+    //         this.users=u;
+    //         // console.log("users",this.users);
+    //         // console.log("userslenght",this.users.length);
+    //         for (let i = 0; i < this.users.length; i++) {    
+    //           if (!this.users[i].displayName) 
+    //             this.users[i].displayName=this.users[i].email;    
+    //           this.auth.getClaims(this.users[i].uid).subscribe(
+    //             (c)=>{
+    //               this.users[i].claims=c;
+    //             }
+    //           )          
+    //         }      
+    //       },
+    //       error:(e)=> console.log(e)
+    //     }
+    //     )
 
-      }
-    }
-    )
+    //   }
+    // }
+    // )
+
+    this.auth.getFilterUsers()
+    this.auth.getFilterUserSubject().subscribe((u)=>this.users=u)
+
     this.search.getSearch().subscribe(
       (szo)=> this.szo=szo
     )

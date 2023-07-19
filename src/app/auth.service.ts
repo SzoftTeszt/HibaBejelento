@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { v4 as uuidv4 } from 'uuid';
 import { UUIDModel } from './uuid';
 import { BaseService } from './base.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GoogleAuthProvider} from '@angular/fire/auth';
 import { Router } from '@angular/router';
@@ -12,9 +12,15 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
+  filterUsers:any;
+  users:any;
+  filterUsersSubject=new Subject();
+
   loggedUser:any=null;
   isLogged= new BehaviorSubject<any>(this.loggedUser);
   
+  isLoggedUserObservable = new Observable();
+
   informatikus=false;
   isInformatikus =new BehaviorSubject<boolean>(this.informatikus);
 
@@ -33,6 +39,9 @@ export class AuthService {
     private base:BaseService, 
      private http: HttpClient
      ,private router:Router) { 
+
+      this.isLoggedUserObservable=this.afAuth.authState
+
       this.afAuth.authState.subscribe((user)=>{
         if (user)
         {
@@ -76,6 +85,12 @@ export class AuthService {
         this.isSuperAdmin.next(this.superAdmin)
       })
   }
+
+
+  getIsLoggedUserObservable(){
+    return this.isLoggedUserObservable
+  }
+
   getIsSuperAdmin(){
     return this.isSuperAdmin;
   }
@@ -162,6 +177,44 @@ export class AuthService {
       .catch((error)=>alert(error.message))
   }
 
-  
+  getFilterUsers(claim?:string){
+    this.getisLogged().subscribe((user)=>
+    {
+      
+      if (user)
+      {
+        this.getUsers().subscribe({
+          next:(u)=>{
+            this.users=u;
+            this.filterUsers=[]
+            // console.log("users",this.users);
+            // console.log("userslenght",this.users.length);
+            for (let i = 0; i < this.users.length; i++) {    
+              if (!this.users[i].displayName) 
+                this.users[i].displayName=this.users[i].email;    
+              this.getClaims(this.users[i].uid).subscribe(
+                (c)=>{
+                  this.users[i].claims=c;
+                  if (claim && this.users[i].claims && this.users[i].claims[claim])
+                    this.filterUsers.push(this.users[i])
+                }
+              )          
+            } 
+            
+            if (!claim) this.filterUsers=this.users;
+            this.filterUsersSubject.next(this.filterUsers)
+          },
+          error:(e)=> console.log(e)
+        }
+        )
 
+      }
+    }
+    )
+    
+  }
+
+  getFilterUserSubject(){
+    return this.filterUsersSubject
+  }
 }

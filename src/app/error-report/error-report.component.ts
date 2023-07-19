@@ -13,12 +13,14 @@ import { ErrorModel } from '../errorModel';
   styleUrls: ['./error-report.component.css']
 })
 export class ErrorReportComponent {
+bejentoHibaUid="";
 uuid:any;
 uuids:any=[];
 user:any=null;
 finish=false;
 error=false;
 mail:any;
+mailUser=false;
 
 constructor(private aroute:ActivatedRoute, public base:BaseService
   ,public router:Router, private auth:AuthService, private email:EmailService){
@@ -29,6 +31,7 @@ constructor(private aroute:ActivatedRoute, public base:BaseService
     window.localStorage.removeItem("email");
     this.finish=true;
     this.error=false;
+    this.mailUser=true;
     // console.log("Sikeres belépés", result)
   })
   .catch((e)=>
@@ -38,8 +41,20 @@ constructor(private aroute:ActivatedRoute, public base:BaseService
     this.error=true;
   })
   else {
-    this.finish=true;
-    this.error=true;
+    this.auth.isLogged.subscribe((u)=>
+    {
+      if (u) {
+        this.finish=true;
+        this.error=false;
+        this.mail=u.email;
+      }
+      else {
+        this.finish=true;
+        this.error=true;
+      }
+    })
+    // this.finish=true;
+    // this.error=true;
   }
 
   // this.auth.getisLogged().subscribe((user)=>
@@ -58,17 +73,21 @@ hibajegyleadasa(content:any){
   body.content=content;
   body.email=this.mail;
   body.status="Felvéve";
-  body.piority="Folyatban";
-  body.uid="0";
+  body.piority="Normál";
+  body.uid="inJm7jVYFeRX4Sn2TAY4uK9ml0v2";
   var d=new Date();
   console.log(d.toLocaleDateString(),";;;", d.toLocaleTimeString())
   body.date=d.toLocaleDateString()+" "+d.toLocaleTimeString();
   this.base.createError(body)
 
-  this.email.sendMail(this.mail, '')
-  // this.base.DeleteUUID(this.search()[0].key);
-  this.auth.signOut();
-  this.router.navigate(['/hibajegyfeldolgozasa'])
+  console.log("MailUser",this.mailUser)
+  if (this.mailUser){
+    this.email.sendMail(this.mail, 'template_oeoe2ho')
+    // this.base.DeleteUUID(this.search()[0].key);
+    this.auth.signOut().then(()=> this.router.navigate(['/hibajegyfeldolgozasa']));
+   
+  }
+}
 }
 
-}
+

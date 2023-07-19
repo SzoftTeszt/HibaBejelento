@@ -35,8 +35,9 @@ constructor( private auth:AuthService, private router:Router, private search:Sea
 
 
 signOut(){
-  this.router.navigate(['/'])
-  this.auth.signOut();
+  
+  this.auth.signOut().then(()=>
+      this.router.navigate(['/']));
 }
 
 kereses(szo:string){

@@ -15,7 +15,7 @@ export class SignInComponent {
     this.auth.getisLogged().subscribe((user)=>
   {
     this.user=user;
-    console.log("BelépvesingIn");
+    // console.log("BelépvesingIn", user);
     if (user)
       {
         console.log("Átirányít")

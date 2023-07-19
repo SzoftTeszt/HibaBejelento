@@ -12,8 +12,10 @@
 
 <div *ngFor="let hibajegy of (hibajegyek|search:szo)|sort:rendezes:rendezes.rendez" class="row">
     <div class="col" *ngFor="let oszlop of oszlopok">
-       <ng-container *ngIf="oszlop.type=='select'; else plainText">
-        <select class="form-select" [(ngModel)]="hibajegy[oszlop.key]">
+       <ng-container [ngSwitch]="oszlop.type">
+
+
+        <select *ngSwitchCase="'select'" class="form-select" [(ngModel)]="hibajegy[oszlop.key]">
             <option *ngFor="let ertek of oszlop.values"
             [selected]="ertek.value==hibajegy[oszlop.key]"
             [value]="ertek.value">
@@ -21,11 +23,34 @@
             </option>
             
           </select>
+        
+        <ng-container *ngSwitchCase="'felelos'">
+            <ng-container>
+                <select (change)="changeFelelos($event, hibajegy)" *ngIf="isSuperAdmin; else nemAdmin" class="form-select" [(ngModel)]="hibajegy[oszlop.key]">
+                    <option *ngFor="let informatikus of informatikusok"
+                    [selected]="informatikus.uid==hibajegy[oszlop.key]"
+                    [value]="informatikus.uid">
+                        <!-- {{informatikus.email}} -->
+                        {{informatikus.displayName}}
+                    </option>
+                    
+                  </select>
+
+                  <ng-template  #nemAdmin >
+                    <p *ngIf="informatikusok">{{findUser(hibajegy[oszlop.key]).diplayName}}</p>
+                  </ng-template>
+            </ng-container>
+
+        </ng-container>
+
+       
+
+          <div *ngSwitchDefault>
+            {{hibajegy[oszlop.key]}}
+          </div>
 
        </ng-container>
-       <ng-template #plainText>
-            {{hibajegy[oszlop.key]}}
-       </ng-template>
+       
  
     </div>
     <div class="col" >
