@@ -28,9 +28,10 @@ export class AuthService {
   isSuperAdmin =new BehaviorSubject<boolean>(this.superAdmin);
 
   serverUrl="https://us-central1-hibabejelento-26e5a.cloudfunctions.net/api/";
+  // serverUrl="127.0.0.1:5001/";
   actionCodeSettings ={
-     url:"http://localhost:4200/errorreport?uuid=",
-    //url:"https://hibabejelento-26e5a.web.app/errorreport?uuid=",
+    //  url:"http://localhost:4200/errorreport?uuid=",
+    url:"https://hibabejelento-26e5a.web.app/errorreport?uuid=",
     handleCodeInApp:true
   }
 
@@ -45,8 +46,9 @@ export class AuthService {
       this.afAuth.authState.subscribe((user)=>{
         if (user)
         {
+          this.filterUsers=[];
           this.loggedUser=user;
-          // console.log("Hírdetve, belépés OK!", this.loggedUser)
+          console.log("Hírdetve, belépés OK!", this.loggedUser)
           this.loggedUser.getIdToken().then((token:any) => {
             this.loggedUser.token=token;
             this.getClaims(this.loggedUser.uid).subscribe(
@@ -60,6 +62,7 @@ export class AuthService {
                 console.log("Jogkörök: ",this.loggedUser.claims)
                 
                 // Kellett ez ide?
+                console.log("consructor next 1")
                 this.isLogged.next(this.loggedUser)
                 this.isInformatikus.next(this.informatikus)
                 this.isSuperAdmin.next(this.superAdmin)
@@ -80,6 +83,7 @@ export class AuthService {
           this.informatikus=this.superAdmin=false;
           // console.log("Hírdetve, belépés hiba, Kilépett? !")
         }
+        console.log("consructor next 2")
         this.isLogged.next(this.loggedUser)
         this.isInformatikus.next(this.informatikus)
         this.isSuperAdmin.next(this.superAdmin)
@@ -155,7 +159,7 @@ export class AuthService {
 
   getClaims(uid:string){
     const url=this.serverUrl+`users/${uid}/claims`;
-    console.log 
+    console.log(url)
     const headers = 
     new HttpHeaders().set('Authorization',this.loggedUser.token);
     return this.http.get(url, {headers})
@@ -178,43 +182,58 @@ export class AuthService {
   }
 
   getFilterUsers(claim?:string){
-    this.getisLogged().subscribe((user)=>
+    claim="informatikus"
+    console.log("-----------------------------------------")
+    console.log("getFilterUsers futt")
+    console.log("-----------------------------------------")
+    this.filterUsers=[];
+    const userle=this.getisLogged().subscribe((user)=>
     {
-      
+      console.log("*Csak******** getFilterUser Csak")
       if (user)
       {
-        this.getUsers().subscribe({
+        console.log("*************** getFilterUser", user)
+        const v=this.getUsers().subscribe({
           next:(u)=>{
+            console.log("getUsers(): ",u)
             this.users=u;
-            this.filterUsers=[]
+            this.filterUsers=this.users.filter((e:any)=>e.claims?.informatikus)
+
             // console.log("users",this.users);
             // console.log("userslenght",this.users.length);
-            for (let i = 0; i < this.users.length; i++) {    
-              if (!this.users[i].displayName) 
-                this.users[i].displayName=this.users[i].email;    
-              this.getClaims(this.users[i].uid).subscribe(
-                (c)=>{
-                  this.users[i].claims=c;
-                  if (claim && this.users[i].claims && this.users[i].claims[claim])
-                    this.filterUsers.push(this.users[i])
-                }
-              )          
-            } 
+            // for (let i = 0; i < this.users.length; i++) {    
+            //   if (!this.users[i].displayName) 
+            //     this.users[i].displayName=this.users[i].email;    
+            //   this.getClaims(this.users[i].uid).subscribe(
+            //     (c)=>{
+            //       this.users[i].claims=c;
+            //       if (claim && this.users[i].claims && this.users[i].claims[claim])
+            //         this.filterUsers.push(this.users[i])
+            //         this.filterUsersSubject.next(this.filterUsers)  
+            //     }
+            //   )          
+            // } 
             
-            if (!claim) this.filterUsers=this.users;
+            // if (!claim) {this.filterUsers=this.users;
+            console.log("NEXTTTTTTTTT")
+            console.log(this.filterUsers)
             this.filterUsersSubject.next(this.filterUsers)
+          // }
           },
           error:(e)=> console.log(e)
         }
         )
-
+        // v.unsubscribe();
       }
     }
-    )
+
     
+    )
+    // userle.unsubscribe();
   }
 
   getFilterUserSubject(){
+    console.log("Feliratkozás getfilterUsers")
     return this.filterUsersSubject
   }
 }

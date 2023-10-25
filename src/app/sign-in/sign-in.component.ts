@@ -18,9 +18,10 @@ export class SignInComponent {
     // console.log("BelépvesingIn", user);
     if (user)
       {
-        console.log("Átirányít")
+        console.log("Átirányít a hibajegykre!!!!", user)
          this.router.navigate(['/hibajegyek']);
         }
+        
   })
 
   }

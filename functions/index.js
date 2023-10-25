@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const serviceAccount = require('./hibabejelento-26e5a-firebase-adminsdk-ms2kw-9cd42401fb.json');
+const serviceAccount = require('./hibabejelento-26e5a-firebase-adminsdk-ms2kw-474ad01e80.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://hibabejelento-26e5a-default-rtdb.europe-west1.firebasedatabase.app"
@@ -58,6 +58,7 @@ app.get('/users', verifyToken, (req, res) => {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName,
+        claims: user.customClaims
         // Egyéb felhasználói adatok ......
       }));
       res.json(users);

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { BaseService } from '../base.service';
-import { map } from 'rxjs';
+import { Subscription, last, map } from 'rxjs';
 import { SearchService } from '../search.service';
 import { AuthService } from '../auth.service';
 import { EmailService } from '../email.service';
@@ -10,13 +10,13 @@ import { EmailService } from '../email.service';
   templateUrl: './hibajegyek.component.html',
   styleUrls: ['./hibajegyek.component.css']
 })
-export class HibajegyekComponent {
+export class HibajegyekComponent implements OnDestroy {
 
   szo:string="";
   isInformatikus=false;
 isSuperAdmin=false;
 informatikusok:any;
-feliratkozas:any=null;
+feliratkozas:Subscription= new Subscription();
 sendMailFelelos=false;
 
   hibajegyek:any;
@@ -48,7 +48,7 @@ sendMailFelelos=false;
  constructor(private base:BaseService, 
   private search:SearchService, 
   private auth:AuthService,
-  private mail:EmailService){
+  private mail:EmailService) {
   this.base.getErrors().snapshotChanges().pipe(
     map(
       ch=> ch.map(c=>({key:c.payload.key, ... c.payload.val()}))
@@ -73,11 +73,17 @@ sendMailFelelos=false;
 
   console.log("Hibajegyek Contsructor")
   this.auth.getFilterUsers('informatikus')
-  if (this.feliratkozas) this.feliratkozas.unsubscribe();
+  // if (this.feliratkozas) this.feliratkozas.unsubscribe();
+  
   this.feliratkozas=this.auth.getFilterUserSubject().subscribe(
     (u:any)=>{
+      console.log("Hibajegy infósok")
       this.informatikusok=u
       console.log("Infósok:", this.informatikusok)
+      if (this.informatikusok.length>0) {
+        console.log("leiratkozunk")
+        this.feliratkozas.unsubscribe()
+      }
     }
   
   )
@@ -92,7 +98,14 @@ sendMailFelelos=false;
  }
 
  ngOnDestroy(){
-  this.feliratkozas.unsubscribe()
+  console.log("XXXXXXXX Hibajegyek Leiratkozás1")
+  console.log("this.feliratkozas",this.feliratkozas)
+  if (!this.feliratkozas.closed)
+  {
+    this.feliratkozas.unsubscribe
+    console.log("XXXXXXXX Hibajegyek Leiratkozás2")
+    console.log("this.feliratkozas",this.feliratkozas)
+  }
  }
 
  sort(oszlop:any){
@@ -122,7 +135,7 @@ sendMailFelelos=false;
 
  findUser(uid:string){
   var inf= this.informatikusok.filter((ertek:any)=>ertek.uid==uid)
-  if (inf && inf[0]) return  inf[0];
+  if (inf && inf[0]) return inf[0];
   return ""
  }
 }

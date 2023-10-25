@@ -41,6 +41,8 @@ testem.log
 /functions/node_modules
 .firebase
 /src/app/enviroments.ts
+/functions/hibabejelento-26e5a-firebase-adminsdk-ms2kw-474ad01e80.json
+/dist
 /public
 # System files
 .DS_Store

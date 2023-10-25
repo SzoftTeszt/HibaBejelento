@@ -1,6 +1,12 @@
 {
   "rules": {
-    ".read": "now < 1690927200000",  // 2023-8-2
-    ".write": "now < 1690927200000",  // 2023-8-2
+    "hibaazonositok":{
+      ".read":true,
+      ".write":true,
+    },
+    "hibajegyek":{
+    ".read": "auth.uid !== null",
+    ".write": "auth.uid != null", 
+    }
   }
 }
