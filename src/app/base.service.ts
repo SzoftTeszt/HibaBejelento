@@ -15,7 +15,8 @@ export class BaseService {
    }
 
    AddUUID(UUID:any){
-    return this.refUUID.push(UUID)
+    return this.refUUID
+    .push(UUID)
    }
    GetAllUUID(){
     return this.refUUID;
